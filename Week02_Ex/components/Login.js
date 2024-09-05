@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,39 +28,56 @@ const Login = ({ navigation }) => {
       onSubmit={handleLogin}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-        <View style={styles.container}>
+        <View className="flex-1 justify-center bg-gray-100 p-6">
+          <View className="items-center mb-20">
+            <Image
+              source={require('../assets/logo.png')}
+              className="w-40 h-40"
+              resizeMode="contain"
+            />
+          </View>
+
           <TextInput
-            style={styles.input}
+            className="border border-gray-300 p-3 rounded mb-3"
             placeholder="Email"
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
             value={values.email}
+            keyboardType="email-address"
           />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+          {errors.email && <Text className="text-red-500 mb-2">{errors.email}</Text>}
+          
           <TextInput
-            style={styles.input}
+            className="border border-gray-300 p-3 rounded mb-3"
             placeholder="Password"
             secureTextEntry
             onChangeText={handleChange('password')}
             onBlur={handleBlur('password')}
             value={values.password}
           />
-          {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-          <Button onPress={handleSubmit} title="Login" />
-          <Button onPress={() => navigation.navigate('Register')} title="Register" />
+          {errors.password && <Text className="text-red-500 mb-2">{errors.password}</Text>}
+
+          <TouchableOpacity
+            onPress={handleSubmit}
+            className="bg-blue-500 py-3 rounded mb-3"
+          >
+            <Text className="text-white text-center">Login</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Register')}
+            className="bg-gray-500 py-3 rounded mb-3"
+          >
+            <Text className="text-white text-center">Register</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text style={{ color: 'blue', marginTop: 10 }}>Forgot password?</Text>
+            <Text className="text-blue-600 text-center">Forgot password?</Text>
           </TouchableOpacity>
         </View>
       )}
     </Formik>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  input: { height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 },
-  errorText: { color: 'red', marginBottom: 10 },
-});
 
 export default Login;

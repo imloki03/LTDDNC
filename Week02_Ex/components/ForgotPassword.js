@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert } from 'react-native';
+import { View, TextInput, Button, Text, Alert, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ForgotPassword = ({ navigation }) => {
@@ -16,7 +16,7 @@ const ForgotPassword = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.1.10:3000/send-otp', {
+      const response = await fetch('http://192.168.97.173:3000/send-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const ForgotPassword = ({ navigation }) => {
   };
 
   const verifyOtp = async () => {
-    if (otp === sentOtp+"") {
+    if (otp === sentOtp + "") {
       Alert.alert('OTP verified successfully!', 'Please enter your new password');
     } else {
       Alert.alert('Incorrect OTP');
@@ -43,7 +43,7 @@ const ForgotPassword = ({ navigation }) => {
   };
 
   const resetPassword = async () => {
-    if (otp !== sentOtp+"") {
+    if (otp !== sentOtp + "") {
       Alert.alert('Please verify the OTP first');
       return;
     }
@@ -63,7 +63,7 @@ const ForgotPassword = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View className="flex-1 justify-center bg-gray-100 p-6">
       {!showOtpInput ? (
         <>
           <TextInput
@@ -71,8 +71,14 @@ const ForgotPassword = ({ navigation }) => {
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
+            className="border border-gray-300 p-3 rounded mb-3"
           />
-          <Button title="Send OTP" onPress={sendOtp} />
+          <TouchableOpacity
+            onPress={sendOtp}
+            className="bg-blue-500 py-3 rounded mb-3"
+          >
+            <Text className="text-white text-center">Send OTP</Text>
+          </TouchableOpacity>
         </>
       ) : (
         <>
@@ -81,16 +87,28 @@ const ForgotPassword = ({ navigation }) => {
             value={otp}
             onChangeText={setOtp}
             keyboardType="numeric"
+            className="border border-gray-300 p-3 rounded mb-3"
           />
-          <Button title="Verify OTP" onPress={verifyOtp} />
-          
+          <TouchableOpacity
+            onPress={verifyOtp}
+            className="bg-blue-500 py-3 rounded mb-3"
+          >
+            <Text className="text-white text-center">Verify OTP</Text>
+          </TouchableOpacity>
+
           <TextInput
             placeholder="Enter new password"
             value={newPassword}
             onChangeText={setNewPassword}
             secureTextEntry
+            className="border border-gray-300 p-3 rounded mb-3"
           />
-          <Button title="Reset Password" onPress={resetPassword} />
+          <TouchableOpacity
+            onPress={resetPassword}
+            className="bg-green-500 py-3 rounded mb-3"
+          >
+            <Text className="text-white text-center">Reset Password</Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
